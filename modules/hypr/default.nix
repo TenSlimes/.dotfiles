@@ -105,6 +105,8 @@ in {
       #};
 
       exec-once = "${startupScript}/bin/start";
+
+      monitor = [ "HDMI-A-1, 1920x1080, 0x0, 1" "DP-2, 1366x768, 1920x0, 1" ];
     };
     extraConfig = ''
       # This is an example Hyprland config file.
@@ -117,7 +119,7 @@ in {
       #
 
       # See https://wiki.hyprland.org/Configuring/Monitors/
-      monitor=,preferred,auto,auto
+      #monitor=,preferred,auto,auto
 
       # For all categories, see https://wiki.hyprland.org/Configuring/Variables/
       input {
