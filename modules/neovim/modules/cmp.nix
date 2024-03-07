@@ -1,33 +1,41 @@
 { ... }: {
   programs.nixvim.plugins = {
     #CMP
-    nvim-cmp = {
+    cmp = {
       enable = true;
-      completion = { autocomplete = [ "TextChanged" ]; };
-      snippet.expand = "luasnip";
-      sources = [
-        { name = "nvim_lsp"; }
-        { name = "luasnip"; }
-        { name = "path"; }
-        { name = "buffer"; }
-      ];
-      window = {
-        completion.border = [ "" "" "" "" "" "" "" "" ];
-        documentation.border = [ "" "" "" "" "" "" "" "" ];
-      };
-      mapping = {
-        "<C-Space>" = "cmp.mapping.complete()";
-        "<C-d>" = "cmp.mapping.scroll_docs(-4)";
-        "<C-e>" = "cmp.mapping.close()";
-        "<C-f>" = "cmp.mapping.scroll_docs(4)";
-        "<CR>" = "cmp.mapping.confirm({ select = true })";
-        "<S-Tab>" = {
-          action = "cmp.mapping.select_prev_item()";
-          modes = [ "i" "s" ];
+      autoEnableSources = false;
+      settings = {
+        completion = { autocomplete = [ "TextChanged" ]; };
+        sources = {
+          __raw = ''
+            cmp.config.sources({
+              { name = 'nvim_lsp' },
+              { name = 'luasnip' },
+            }, {
+              { name = 'buffer' },
+              { name = 'path' },
+            })
+
+          '';
         };
-        "<Tab>" = {
-          action = "cmp.mapping.select_next_item()";
-          modes = [ "i" "s" ];
+        snippet.expand = ''
+          function(args)
+            require('luasnip').lsp_expand(args.body)
+          end
+        '';
+        #window = {
+        #  completion.border = [ "" "" "" "" "" "" "" "" ];
+        #  documentation.border = [ "" "" "" "" "" "" "" "" ];
+        #};
+
+        mapping = {
+          "<C-Space>" = "cmp.mapping.complete()";
+          "<C-d>" = "cmp.mapping.scroll_docs(-4)";
+          "<C-e>" = "cmp.mapping.close()";
+          "<C-f>" = "cmp.mapping.scroll_docs(4)";
+          "<CR>" = "cmp.mapping.confirm({ select = true })";
+          "<S-Tab>" = "cmp.mapping(cmp.mapping.select_prev_item(), {'i', 's'})";
+          "<Tab>" = "cmp.mapping(cmp.mapping.select_next_item(), {'i', 's'})";
         };
       };
     };
