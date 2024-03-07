@@ -6,6 +6,7 @@ in {
     settings = {
       mainBar = {
         layer = "top";
+        output = "HDMI-A-1";
         position = "top";
         #modules-left = [ "hyprland/window" ];
         modules-center = [ "hyprland/workspaces" ];
