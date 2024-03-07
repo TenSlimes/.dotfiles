@@ -76,7 +76,7 @@ in {
       nvim-tree = {
         enable = true;
         autoClose = true;
-
+        filters = { dotfiles = true; };
       };
       treesitter.enable = true;
       luasnip.enable = true;
