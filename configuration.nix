@@ -66,7 +66,7 @@ in {
   # services.xserver.enable = true;
   services.xserver = {
     enable = true;
-    videoDrivers = [ "nvidia" ];
+    videoDrivers = [ "nvidia" "amdgpu" ];
     displayManager = {
       defaultSession = "hyprland";
       autoLogin = {
