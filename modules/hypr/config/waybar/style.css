@@ -1,0 +1,14 @@
+/* 
+--space-cadet: #323353;
+--space-cadet-2: #2D3252;
+--space-cadet-3: #161640;
+--plum: #943A83;
+--space-cadet-4: #2D3354;
+  */
+
+window#waybar {
+  padding: 0px 10px;
+  background: #2f1a5b;
+  border-radius: 20px;
+  border: solid #f879ae 2px;
+}
