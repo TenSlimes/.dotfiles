@@ -5,7 +5,13 @@
 
     nixpkgs = { url = "nixpkgs/nixos-unstable"; };
 
+    # Just incase I want the stable version
     nixpkgs-stable.url = "nixpkgs/nixos-23.11";
+
+    firefox-addons = {
+      url = "gitlab:rycee/nur-expressions?dir=pkgs/firefox-addons";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
 
     home-manager = {
       url = "github:nix-community/home-manager/master";
@@ -44,10 +50,10 @@
 
     nix-colors = { url = "github:misterio77/nix-colors"; };
 
+    sops-nix.url = "github:Mic92/sops-nix";
   };
 
-  outputs = { self, nixpkgs, nixpkgs-stable, home-manager, hyprland, hyprlock
-    , nixvim, nix-colors, ... }@inputs:
+  outputs = { self, nixpkgs, nixpkgs-stable, nixvim, nix-colors, ... }@inputs:
     let
       systemSettings = {
         system = "x86_64-linux";
@@ -87,21 +93,22 @@
           modules = [
             ./configuration.nix
             ./hardware-configuration.nix
-            hyprland.nixosModules.default
+            inputs.hyprland.nixosModules.default
             { programs.hyprland.enable = true; }
           ];
         };
       };
       homeConfigurations = {
-        ${userSettings.username} = home-manager.lib.homeManagerConfiguration {
-          inherit pkgs;
-          modules = [ ./home.nix ];
-          extraSpecialArgs = {
-            inherit inputs;
-            inherit pkgs-stable;
-            inherit userSettings;
+        ${userSettings.username} =
+          inputs.home-manager.lib.homeManagerConfiguration {
+            inherit pkgs;
+            modules = [ ./home.nix ];
+            extraSpecialArgs = {
+              inherit inputs;
+              inherit pkgs-stable;
+              inherit userSettings;
+            };
           };
-        };
       };
     };
 }
