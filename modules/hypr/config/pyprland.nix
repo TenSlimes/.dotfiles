@@ -6,6 +6,7 @@ in {
     plugins = [
       "scratchpads",
       "magnify",
+      "shift_monitors",
       "layout_center"
     ]
 
