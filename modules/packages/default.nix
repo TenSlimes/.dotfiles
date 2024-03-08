@@ -5,7 +5,13 @@ let
   useFish = if (terminalConfig.shell == "fish") then true else false;
   useZsh = if (terminalConfig.shell == "zsh") then true else false;
 in {
-  imports = [ ./obs.nix ./fzf.nix ];
+  imports = [
+    ./obs.nix
+
+    ./fzf.nix
+
+    ./firefox.nix
+  ];
 
   home.packages = (with pkgs-stable; [
     # Discord
@@ -16,8 +22,6 @@ in {
     openvpn
     ranger
   ]) ++ (with pkgs; [
-    # Browser
-    firefox
 
     krita
     atlauncher
@@ -31,4 +35,10 @@ in {
   ]);
 
   programs.nix-index.enable = true;
+
+  programs.git = {
+    enable = true;
+    userEmail = config.sops.secrets.github_email;
+    userName = config.sops.secrets.github_username;
+  };
 }
