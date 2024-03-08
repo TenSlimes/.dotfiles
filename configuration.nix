@@ -2,18 +2,20 @@
 # your system. Help is available in the configuration.nix(5) man page, on
 # https://search.nixos.org/options and in the NixOS manual (`nixos-help`).
 
-{ userSettings, config, lib, pkgs, inputs, ... }:
+{ userSettings, systemSettings, config, lib, pkgs, inputs, ... }:
 let
   terminalConfig = userSettings.terminal;
 
   useZsh = if (terminalConfig.shell == "zsh") then true else false;
 
   useFish = if (terminalConfig.shell == "fish") then true else false;
+
+  nvidiaSettings = systemSettings.gpu.nvidia;
 in {
   imports = [ # Include the results of the hardware scan.
+    ./modules/kernels
     ./hardware-configuration.nix
-
-    inputs.sops-nix.nixosModules.sops
+    ./modules/files
   ];
 
   sops.defaultSopsFile = ./secrets/secrets.yaml;
@@ -21,7 +23,14 @@ in {
 
   sops.age.keyFile = "/home/alit/.config/sops/age/keys.txt";
 
+  sops.secrets = {
+    github_username = { owner = config.users.users.alit.name; };
+
+    github_email = { owner = config.users.users.alit.name; };
+  };
+
   nixpkgs.config.allowUnfree = true;
+
   nixpkgs.config.allowUnfreePredicate = pkg:
     builtins.elem (lib.getName pkg) [ "steam" "steam-original" "steam-run" ];
 
@@ -57,12 +66,14 @@ in {
     driSupport32Bit = true;
   };
 
-  hardware.nvidia = {
-    modesetting.enable = true;
-    open = false;
-    nvidiaSettings = true;
-    package = config.boot.kernelPackages.nvidiaPackages.stable;
-  };
+  hardware.nvidia =
+    if (nvidiaSettings.open == false && nvidiaSettings.enable) then {
+      modesetting.enable = true;
+      open = false;
+      nvidiaSettings = true;
+      package = config.boot.kernelPackages.nvidiaPackages.stable;
+    } else
+      { };
 
   hardware.opentabletdriver = {
     enable = true;
@@ -73,7 +84,8 @@ in {
   # services.xserver.enable = true;
   services.xserver = {
     enable = true;
-    videoDrivers = [ "nvidia" "amdgpu" ];
+    videoDrivers = [ "amdgpu" ]
+      ++ (if (nvidiaSettings.enable) then [ "nvidia" ] else [ ]);
     displayManager = {
       defaultSession = "hyprland";
       autoLogin = {
@@ -141,9 +153,6 @@ in {
     killall
     glxinfo
     btop
-    #(mesa.overrideAttrs (oldAttrs: {
-    #  vulkanDrivers = ["nouveau-experimental"];
-    #}))
 
     eza
 
@@ -160,6 +169,14 @@ in {
     winetricks
 
     sops
+
+    libva
+    libva-utils
+    vaapiVdpau
+
+    zenith-nvidia
+
+    mesa
 
   ]);
 

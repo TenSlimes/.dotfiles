@@ -1,5 +1,6 @@
-{ userSettings, ... }:
+{ systemSettings, userSettings, ... }:
 let
+  nvidiaSettings = systemSettings.gpu.nvidia;
   terminalConfig = userSettings.terminal;
   nvidiaEnv = import ./nvidia.nix;
 in {
@@ -25,7 +26,7 @@ in {
       "QT_WAYLAND_DISABLE_WINDOWDECORATION,1"
       "QT_AUTO_SCREEN_SCALE_FACTOR,1"
       "MOZ_ENABLE_WAYLAND,1"
-      "WLR_DRM_DEVICES,/dev/dri/card1:/dev/dri/card0"
     ];
+
   };
 }

@@ -55,9 +55,15 @@
 
   outputs = { self, nixpkgs, nixpkgs-stable, nixvim, nix-colors, ... }@inputs:
     let
-      systemSettings = {
+      systemSettings = rec {
         system = "x86_64-linux";
         hostname = "tenslime";
+        gpu = {
+          nvidia = {
+            enable = true;
+            open = true; # Open source version, literally open source duh
+          };
+        };
       };
 
       colors = { slug = "catppuccin-frappe"; };
@@ -94,6 +100,7 @@
             ./configuration.nix
             ./hardware-configuration.nix
             inputs.hyprland.nixosModules.default
+            inputs.sops-nix.nixosModules.sops
             { programs.hyprland.enable = true; }
           ];
         };
@@ -106,6 +113,7 @@
             extraSpecialArgs = {
               inherit inputs;
               inherit pkgs-stable;
+              inherit systemSettings;
               inherit userSettings;
             };
           };

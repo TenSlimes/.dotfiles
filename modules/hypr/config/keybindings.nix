@@ -90,6 +90,10 @@ in {
       "$mainMod SHIFT, Z, exec, pypr zoom"
       "$mainMod SHIFT, V, exec, pypr toggle easyeffects"
 
+      # Shift monitors
+      "$mainMod, O, exec, pypr shift_monitors +1"
+      "$mainMod SHIFT, O, exec, pypr shift_monitors -1"
+
     ];
   };
 }
