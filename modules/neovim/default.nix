@@ -5,9 +5,17 @@ let
   lsp = import ./modules/lsp.nix;
   alpha = import ./modules/alpha.nix;
   autoCmd = import ./modules/autocommands.nix;
+  programming = import ./modules/programming.nix;
 in {
-  imports =
-    [ inputs.nixvim.homeManagerModules.nixvim alpha keymaps lsp cmp autoCmd ];
+  imports = [
+    inputs.nixvim.homeManagerModules.nixvim
+    alpha
+    keymaps
+    lsp
+    cmp
+    autoCmd
+    programming
+  ];
 
   programs.nixvim = {
     enable = true;
