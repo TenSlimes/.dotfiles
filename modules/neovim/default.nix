@@ -19,15 +19,14 @@ in {
 
   programs.nixvim = {
     enable = true;
+    #options.termguicolor = true;
     clipboard = {
       register = "unnamedplus";
       providers = { wl-copy.enable = true; };
     };
     colorschemes.base16 = {
       enable = true;
-      useTruecolor = true;
-      #colorscheme = lib.toLower config.colorScheme.slug;
-      customColorScheme = with config.colorScheme.palette; {
+      colorscheme = with config.colorScheme.palette; {
         base00 = "#${base00}";
         base01 = "#${base01}";
         base02 = "#${base02}";
@@ -44,7 +43,6 @@ in {
         base0D = "#${base0D}";
         base0E = "#${base0E}";
         base0F = "#${base0F}";
-
       };
     };
 
@@ -56,6 +54,10 @@ in {
     vimAlias = true;
 
     plugins = {
+      #lazy = {
+      #  enable = true;
+      #  plugins = { "LazyVim/LazyVim" = { enabled = true; }; };
+      #};
       nvim-autopairs = {
         enable = true;
         enableAbbr = true;
