@@ -33,6 +33,7 @@
         "browser.download.panel_shown" = true;
         "identity.fxaccounts.enabled" = false;
         "signon.rememberSignons" = false;
+        "network.trr.uri" = "https://mozilla.cloudflare-dns.com/dns-query";
       };
       extensions = with inputs.firefox-addons.packages."x86_64-linux"; [
         bitwarden
@@ -42,6 +43,9 @@
         youtube-shorts-block
         facebook-container
         multi-account-containers
+        privacy-badger
+        duckduckgo-privacy-essentials
+        auto-tab-discard
       ];
     };
   };
