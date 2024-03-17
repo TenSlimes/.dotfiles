@@ -23,12 +23,6 @@ in {
 
   sops.age.keyFile = "/home/alit/.config/sops/age/keys.txt";
 
-  sops.secrets = {
-    github_username = { owner = config.users.users.alit.name; };
-
-    github_email = { owner = config.users.users.alit.name; };
-  };
-
   nixpkgs.config.allowUnfree = true;
 
   nixpkgs.config.allowUnfreePredicate = pkg:
@@ -48,22 +42,11 @@ in {
   # Set your time zone.
   time.timeZone = "Asia/Jayapura";
 
-  # Configure network proxy if necessary
-  # networking.proxy.default = "http://user:password@proxy:port/";
-  # networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
-
-  # Select internationalisation properties.
-  # i18n.defaultLocale = "en_US.UTF-8";
-  # console = {
-  #   font = "Lat2-Terminus16";
-  #   keyMap = "us";
-  #   useXkbConfig = true; # use xkb.options in tty.
-  # };
-
   hardware.opengl = {
     enable = true;
     driSupport = true;
     driSupport32Bit = true;
+    extraPackages = with pkgs; [ nvidia-vaapi-driver libvdpau-va-gl ];
   };
 
   hardware.nvidia =
@@ -84,8 +67,12 @@ in {
   # services.xserver.enable = true;
   services.xserver = {
     enable = true;
-    videoDrivers = [ "amdgpu" ]
-      ++ (if (nvidiaSettings.enable) then [ "nvidia" ] else [ ]);
+    videoDrivers = [
+      #"amdgpu" 
+    ] ++ (if (nvidiaSettings.enable && nvidiaSettings.open == false) then
+      [ "nvidia" ]
+    else
+      [ ]);
     displayManager = {
       defaultSession = "hyprland";
       autoLogin = {
@@ -128,7 +115,8 @@ in {
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.alit = {
     isNormalUser = true;
-    extraGroups = [ "wheel" "networkmanager" ]; # Enable ‘sudo’ for the user.
+    extraGroups =
+      [ "wheel" "networkmanager" "docker" ]; # Enable ‘sudo’ for the user.
     packages = with pkgs; [ ];
   };
 
@@ -147,7 +135,7 @@ in {
     wget
     neofetch
     nodejs_21
-    corepack_21
+    nodePackages.pnpm
     usbutils
     pciutils
     killall
@@ -163,10 +151,6 @@ in {
     vulkan-tools
 
     temurin-bin-21
-    temurin-bin-8
-
-    wineWowPackages.staging
-    winetricks
 
     sops
 
@@ -177,8 +161,17 @@ in {
     zenith-nvidia
 
     mesa
+    vulkan-tools
+
+    zip
+    unzip
 
   ]);
+
+  virtualisation.docker = {
+    enable = true;
+    enableNvidia = true;
+  };
 
   services.openssh.enable = true;
 
