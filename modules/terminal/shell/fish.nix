@@ -6,8 +6,13 @@
       eval (${pkgs.tmuxifier}/bin/tmuxifier init - fish)
     '';
     shellAliases = {
-      rebuild-home = "home-manager switch --flake . ";
+      rebuild-home = ''
+        rm ~/.mozilla/firefox/alit/search.json.mozlz4 &
+                cd /home/alit/.dotfiles &
+                home-manager switch --flake . &&
+                reload-wallpaper'';
       rebuild-system = "sudo nixos-rebuild switch --flake .";
+      rebuild-all = "rebuild-system && rebuild-home";
     };
   };
 }
