@@ -1,9 +1,9 @@
 { ... }: {
 
   fileSystems."/home/alit/Disks/Data" = {
-    device = "/dev/disk/by-uuid/B472CC1972CBDE6C";
-    fsType = "ntfs-3g";
-    options = [ "defaults" "rw" "users" "exec" "gid=100" "uid=1000" ];
+    device = "/dev/disk/by-uuid/21cefedf-98f2-44f3-b39b-9644c88ad8ea";
+    fsType = "ext4";
+    #options = [ "defaults" "rw" "users" "exec" "gid=100" "uid=1000" ];
   };
   fileSystems."/home/alit/Disks/Games" = {
     device = "/dev/disk/by-uuid/6fd30735-4f6c-428f-bdaa-b3384de3048a";
