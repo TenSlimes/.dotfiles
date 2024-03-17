@@ -13,32 +13,30 @@ in {
     ./firefox.nix
   ];
 
-  home.packages = (with pkgs-stable; [
-    # Discord
-    #webcord-vencord
-    # Just anime stuff
-    mpv
-    ani-cli
-    openvpn
-    ranger
-  ]) ++ (with pkgs; [
+  home.packages = (with pkgs-stable;
+    [
+      #webcord-vencord
+      # Just anime stuff
+    ]) ++ (with pkgs; [
 
-    krita
-    atlauncher
-    lazygit
-    gamemode
+      mpv
+      ani-cli
+      openvpn
+      ranger
+      krita
 
-    vesktop
-    easyeffects
+      lazygit
+      gamemode
 
-    tmuxifier
-  ]);
+      vesktop
+      easyeffects
+
+      tmuxifier
+
+      mongodb-compass
+
+    ]);
 
   programs.nix-index.enable = true;
 
-  programs.git = {
-    enable = true;
-    userEmail = config.sops.secrets.github_email;
-    userName = config.sops.secrets.github_username;
-  };
 }
