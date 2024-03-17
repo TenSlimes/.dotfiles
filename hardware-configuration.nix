@@ -4,45 +4,27 @@
 { config, lib, pkgs, modulesPath, ... }:
 
 {
-  imports =
-    [ (modulesPath + "/installer/scan/not-detected.nix")
-    ./modules/kernels
-    ];
+  imports = [ (modulesPath + "/installer/scan/not-detected.nix") ];
 
-  boot.initrd.availableKernelModules = [ "xhci_pci" "ahci" "nvme" "usb_storage" "usbhid" "sd_mod" ];
-  boot.initrd.kernelModules = [];
+  boot.initrd.availableKernelModules =
+    [ "xhci_pci" "ahci" "nvme" "usb_storage" "usbhid" "sd_mod" ];
+  boot.initrd.kernelModules = [ ];
+  boot.kernelModules = [ "kvm-amd" ];
   boot.extraModulePackages = [ ];
 
-  fileSystems."/" =
-    { device = "/dev/disk/by-uuid/5190fa8f-9cf0-40a7-a06e-fa45d5342074";
-      fsType = "ext4";
-    };
-
-  fileSystems."/boot" =
-    { device = "/dev/disk/by-uuid/5681-3BA5";
-      fsType = "vfat";
-    };
-
-  swapDevices =
-    [ { device = "/dev/disk/by-uuid/cbdbd6ba-e90f-42cd-9c34-c4ffc963c767"; }
-    ];
-
-  fileSystems."/home/alit/Disks/Data" = {
-    device = "/dev/disk/by-uuid/B472CC1972CBDE6C";
-    fsType = "ntfs-3g";
-    options = [
-      "defaults"
-      "rw"
-      "users"
-      "exec"
-      "gid=100"
-      "uid=1000"
-    ];
-  };
-  fileSystems."/home/alit/Disks/Games" = {
-    device = "/dev/disk/by-uuid/6fd30735-4f6c-428f-bdaa-b3384de3048a";
+  fileSystems."/" = {
+    device = "/dev/disk/by-uuid/e870638c-226c-400f-9706-2e7efbcd6ab7";
     fsType = "ext4";
   };
+
+  fileSystems."/boot" = {
+    device = "/dev/disk/by-uuid/5D2B-9C1D";
+    fsType = "vfat";
+  };
+
+  swapDevices =
+    [{ device = "/dev/disk/by-uuid/8c1740bd-aea0-47a0-ace7-eef9f57efaae"; }];
+
   # Enables DHCP on each ethernet and wireless interface. In case of scripted networking
   # (the default) this is the recommended approach. When using systemd-networkd it's
   # still possible to use this option, but it's recommended to use it in conjunction
@@ -51,5 +33,6 @@
   # networking.interfaces.enp6s0.useDHCP = lib.mkDefault true;
 
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
-  hardware.cpu.amd.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
+  hardware.cpu.amd.updateMicrocode =
+    lib.mkDefault config.hardware.enableRedistributableFirmware;
 }
