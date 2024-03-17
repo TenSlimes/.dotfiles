@@ -1,4 +1,4 @@
-{ lib, inputs, config, pkgs, ... }:
+{ lib, inputs, config, pkgs, userSettings, ... }:
 let
   waybar = import ./config/waybar.nix;
   # Some hyprland config
@@ -15,8 +15,9 @@ let
 
   pyprland-config = import ./config/pyprland.nix;
 
-  wallpaperPath = ./config/wallpapers/sky-butterfly.jpg;
+  wallpaperPath = userSettings.theme.wallpaperPath;
 
+  nixc-lib = inputs.nix-colors.lib-core;
   colorPalette = config.colorScheme.palette;
 
   startupScript = pkgs.pkgs.writeShellScriptBin "start" ''
@@ -68,7 +69,6 @@ in {
     cliphist = { enable = true; };
     dunst = { enable = true; };
   };
-  home.file.".wallpapers".source = ./config/wallpapers;
 
   wayland.windowManager.hyprland = {
     enable = true;
@@ -96,7 +96,7 @@ in {
           xray = false;
         };
       };
-      layerrule = "blur,waybar";
+      #layerrule = "blur,waybar";
       #group = {
       #  "col.border_active" = "rgba(ca9ee6ff) rgba(f2d5cfff) 45deg";
       #  "col.border_inactive" = "rgba(b4befecc) rgba(6c7086cc) 45deg";
@@ -106,7 +106,8 @@ in {
 
       exec-once = "${startupScript}/bin/start";
 
-      monitor = [ "HDMI-A-1, 1920x1080, 0x0, 1" "DP-2, 1366x768, 1920x0, 1" ];
+      #monitor = [ "HDMI-A-1, 1920x1080, 0x0, 1" "DP-2, 1366x768, 1920x0, 1" ];
+      monitor = "monitor=,preferred,auto,auto";
     };
     extraConfig = ''
       # This is an example Hyprland config file.
