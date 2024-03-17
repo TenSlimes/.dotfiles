@@ -8,16 +8,24 @@
       servers = {
         tsserver.enable = true;
         lua-ls.enable = true;
-        nixd.enable = true;
+        #nixd.enable = true;
         svelte = {
           enable = true;
           initOptions = {
             svelte = { plugin = { svelte.format = { enable = true; }; }; };
           };
         };
+
         html.enable = true;
         tailwindcss = { enable = true; };
         cssls.enable = true;
+
+        rust-analyzer = {
+          enable = true;
+          installCargo = false;
+          installRustc = false;
+        };
+
       };
     };
 
