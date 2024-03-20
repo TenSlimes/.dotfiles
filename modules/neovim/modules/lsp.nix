@@ -26,6 +26,8 @@
           installRustc = false;
         };
 
+        dockerls = { enable = true; };
+
       };
     };
 
