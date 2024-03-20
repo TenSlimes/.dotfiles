@@ -22,16 +22,13 @@ let
 
   startupScript = pkgs.pkgs.writeShellScriptBin "start" ''
     ${pkgs.waybar}/bin/waybar &
-    ${pkgs.swww}/bin/swww init &
-
-    sleep 1
-
-    ${pkgs.swww}/bin/swww img ${wallpaperPath} &
 
     pypr &
 
     wl-paste --type text --watch cliphist store &
     wl-paste --type image --watch cliphist store &
+
+    ${pkgs.hyprpaper}/bin/hyprpaper &
 
     dunst &
   '';
@@ -55,15 +52,18 @@ in {
   home.packages = (with pkgs; [
     # Hyprland
     rofi-wayland
+    hyprpaper
     pyprland
     wl-clipboard
-    swww
     eww
 
-    (pkgs.writeShellScriptBin "reload-wallpaper" ''
-      ${pkgs.swww}/bin/swww img ${wallpaperPath}
-    '')
   ]);
+
+  xdg.configFile."hypr/hyprpaper.conf".text = ''
+    preload = ${userSettings.theme.wallpaperPath}
+    splash = false
+    wallpaper = HDMI-A-1,contain:${userSettings.theme.wallpaperPath}
+  '';
 
   services = {
     cliphist = { enable = true; };
@@ -89,14 +89,14 @@ in {
         drop_shadow = false;
         blur = {
           enabled = true;
-          size = 6;
+          size = 4;
           passes = 3;
           new_optimizations = "on";
           ignore_opacity = "on";
           xray = false;
         };
       };
-      #layerrule = "blur,waybar";
+      layerrule = "blur,waybar";
       #group = {
       #  "col.border_active" = "rgba(ca9ee6ff) rgba(f2d5cfff) 45deg";
       #  "col.border_inactive" = "rgba(b4befecc) rgba(6c7086cc) 45deg";
