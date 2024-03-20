@@ -20,21 +20,39 @@ in {
     ]) ++ (with pkgs; [
 
       mpv
+      mangal
       ani-cli
       openvpn
-      ranger
-      krita
+      #krita
 
       lazygit
       gamemode
 
-      vesktop
       easyeffects
 
       tmuxifier
 
       mongodb-compass
 
+      webcord
+
+      # Better History Search
+      atuin
+
+      # Better disk display
+      dust
+
+      # Better cat
+      bat
+
+      # Better man
+      tldr
+
+      # Android emu
+
+      waydroid
+
+      zathura
     ]);
 
   programs.nix-index.enable = true;

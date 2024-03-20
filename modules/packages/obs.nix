@@ -1,5 +1,4 @@
-{ pkgs, config, lib, ... }:
-{
+{ pkgs, config, lib, ... }: {
   # OBS
   programs.obs-studio = {
     enable = true;
@@ -9,6 +8,6 @@
       obs-vaapi
       obs-gstreamer
       obs-vkcapture
-    ]); 
+    ]);
   };
 }

@@ -46,6 +46,7 @@
         privacy-badger
         duckduckgo-privacy-essentials
         auto-tab-discard
+        vimium
       ];
     };
   };
