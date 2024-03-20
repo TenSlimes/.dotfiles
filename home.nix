@@ -41,7 +41,14 @@ in {
     (pkgs.nerdfonts.override { fonts = [ "FantasqueSansMono" "FiraCode" ]; })
   ];
 
-  xdg = { enable = true; };
+  xdg = {
+    enable = true;
+    mimeApps = {
+      enable = true;
+      associations.added = { "application/pdf" = [ "zathura.desktop" ]; };
+      defaultApplications = { "application/pdf" = [ "zathura.desktop" ]; };
+    };
+  };
 
   home.sessionVariables = { EDITOR = "nvim"; };
 

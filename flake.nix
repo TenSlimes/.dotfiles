@@ -141,6 +141,7 @@
                 rust-bin.stable.latest.default
                 cargo
                 gcc
+                ffmpeg
               ];
 
             })
