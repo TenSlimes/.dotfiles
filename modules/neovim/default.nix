@@ -91,7 +91,7 @@ in {
       treesitter.enable = true;
       luasnip.enable = true;
       nix.enable = true;
-      neocord = { enable = true; };
+      #neocord = { enable = true; };
       tmux-navigator = { enable = true; };
       surround = { enable = true; };
       trouble = { enable = true; };
